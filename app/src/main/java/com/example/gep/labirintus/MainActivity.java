@@ -1,5 +1,7 @@
 package com.example.gep.labirintus;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +33,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final DBHandler dbHandler = new DBHandler(this);
 
+        Button top10Button = (Button) findViewById(R.id.top10);
+
+        top10Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String recordList = "";
+                int pos = 1;
+
+                Cursor cursor = dbHandler.loadRecords();
+                while(!cursor.isAfterLast()){
+                    String name = cursor.getString(cursor.getColumnIndex("name"));
+                    String time = cursor.getString(cursor.getColumnIndex("time"));
+                    String tries = cursor.getString(cursor.getColumnIndex("tries"));
+                    recordList += pos + ". helyezett neve: " + name + ", ideje: " + time +
+                            ", próbálkozásainak száma: " + tries + "\n";
+                    pos++;
+                    cursor.moveToNext();
+                }
+
+                Intent dbIntent = new Intent(MainActivity.this, DBActivity.class);
+                dbIntent.putExtra("db", recordList);
+            }
+        });
+
+        Button playButton = (Button) findViewById(R.id.play);
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gameIntent = new Intent(MainActivity.this, GameActivity.class);
+            }
+        });
     }
 }
