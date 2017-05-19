@@ -27,6 +27,7 @@ public class DBHandler {
         values.put("time", time);
         values.put("tries", tries);
         db.insert(TABLE_RECORDS, null, values);
+        db.delete(TABLE_RECORDS, "time = (SELECT Max(time) FROM " + TABLE_RECORDS + ")", null);
         db.close();
     }
 
@@ -55,6 +56,14 @@ public class DBHandler {
                     "time   INTEGER, " +
                     "tries  INTEGER" +
                     ")");
+
+            ContentValues values = new ContentValues();
+            values.put("name", "Ismeretlen");
+            values.put("time", 10 * 60 * 1000);
+            values.put("tries", 100);
+            for (int i = 0; i < 10; i++) {
+                db.insert(TABLE_RECORDS, null, values);
+            }
         }
 
         @Override

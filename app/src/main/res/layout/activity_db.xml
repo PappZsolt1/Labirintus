@@ -10,6 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/text"
+        android:textSize="18sp"
+        android:scrollbars="vertical"
+        android:padding="10dp"
         />
 
 </android.support.constraint.ConstraintLayout>
