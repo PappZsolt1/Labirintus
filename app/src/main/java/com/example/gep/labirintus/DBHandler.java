@@ -31,6 +31,16 @@ public class DBHandler {
         db.close();
     }
 
+    public int getHighestTime() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_RECORDS +
+                " WHERE time = (SELECT Max(time) FROM " + TABLE_RECORDS + ")", null);
+        cursor.moveToFirst();
+        int highestTime = cursor.getInt(cursor.getColumnIndex("time"));
+        db.close();
+        return highestTime;
+    }
+
     public Cursor loadRecords() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_RECORDS +
